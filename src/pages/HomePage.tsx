@@ -1,0 +1,46 @@
+import { ArrowDownRight, ArrowUpRight, MoveRight } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import MediaImage from '../components/MediaImage';
+import SectionReveal from '../components/SectionReveal';
+import { growthServices, locations, perspectives, specialities, training, destinations } from '../data/site';
+
+const intent = [
+  {title:'BE SEEN', sub:'Visibility', service:0},
+  {title:'BE REMEMBERED', sub:'Brand', service:1},
+  {title:'CREATE DEMAND', sub:'Marketing', service:2},
+  {title:'CONVERT', sub:'Sales', service:3},
+  {title:'GROW REVENUE', sub:'Revenue', service:4},
+];
+
+const serviceAnchors = ['public-relations','branding','marketing','sales','revenue'];
+
+export default function HomePage(){
+ const [active,setActive]=useState(2); const {scrollYProgress}=useScroll(); const heroY=useTransform(scrollYProgress,[0,.18],[0,-100]);
+ const selected=growthServices[active];
+ return <div className="home">
+   <section className="hero hero-home"><div className="hero-bg"><MediaImage priority src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=2400&q=88" alt="Strategic business environment"/></div><div className="hero-shade"/><motion.div className="hero-copy" style={{y:heroY}}><div className="eyebrow">STRATEGY · VISIBILITY · GROWTH</div><h1>Business has<br/><em>momentum.</em></h1><p className="hero-lead">Until something gets in the way.</p><p className="hero-support">Market Magnet Solutions helps businesses identify the friction, strengthen the brand, create demand and turn opportunity into revenue.</p><div className="hero-actions"><Link className="button button-light" to="/growth">Explore the growth system <ArrowUpRight/></Link><a className="scroll-hint" href="#intent"><ArrowDownRight/> Find your lever</a></div></motion.div><div className="hero-index">01 <span>/</span> 06</div></section>
+
+   <section id="intent" className="intent-section section-dark"><SectionReveal><div className="section-kicker">START WITH THE PROBLEM</div><h2>What needs<br/><em>to move?</em></h2><p className="section-intro">You don't have to understand our structure first. Start with the business challenge. We'll show you where we fit.</p></SectionReveal><div className="intent-grid">{intent.map((item,i)=><Link key={item.title} to={`/growth#${serviceAnchors[i]}`} className={`intent-card ${active===i?'active':''}`} onMouseEnter={()=>setActive(i)} onFocus={()=>setActive(i)}><span>0{i+1}</span><b>{item.title}</b><small>{item.sub}</small><ArrowUpRight/></Link>)}</div><motion.div className="intent-result" key={selected.key} initial={{opacity:0,x:30}} animate={{opacity:1,x:0}} transition={{duration:.5}}><MediaImage src={selected.image} alt={selected.title}/><div className="intent-result-copy"><div className="section-kicker">YOUR LEVER · {selected.number}</div><h3>{selected.short}</h3><p>{selected.description}</p><Link to={`/growth#${serviceAnchors[active]}`}>Explore {selected.title} <ArrowUpRight/></Link></div></motion.div></section>
+
+   <section className="growth-story section-ivory"><SectionReveal><div className="section-kicker">THE MARKET MAGNET GROWTH SYSTEM</div><h2>One problem.<br/><em>Many levers.</em></h2><p className="section-intro">A business rarely needs one isolated service. Visibility, positioning, demand, conversion and revenue influence each other.</p></SectionReveal><div className="growth-rail">{growthServices.map((s,i)=><Link to={`/growth#${serviceAnchors[i]}`} key={s.key} className={`growth-node ${i===active?'active':''}`} onMouseEnter={()=>setActive(i)}><span>{s.number}</span><b>{s.title}</b><small>{s.short}</small>{i<growthServices.length-1&&<MoveRight/>}</Link>)}</div><div className="growth-statement"><span>FROM</span><strong>BEING SEEN</strong><span>TO</span><strong>BEING CHOSEN.</strong></div></section>
+
+   <section className="diagnostic section-green"><div className="diagnostic-image"><MediaImage src={selected.image} alt="Business growth strategy"/></div><div className="diagnostic-copy"><div className="section-kicker">A DIFFERENT STARTING POINT</div><h2>Where is your business losing <em>momentum?</em></h2><div className="problem-list">{["Nobody knows us.","People know us, but don't remember us.","We aren't generating enough demand.","We get opportunities, but lose them.","We're growing, but revenue isn't following."].map((p,i)=><Link key={p} to={`/growth#${serviceAnchors[i]}`} onMouseEnter={()=>setActive(i)} className={active===i?'active':''}><span>0{i+1}</span>{p}<ArrowUpRight/></Link>)}</div></div></section>
+
+   <section className="founder section-ivory"><div className="founder-photo"><MediaImage src="/images/shikha-professional.jpg" alt="Shikha Khanna, Founder of Market Magnet Solutions"/></div><SectionReveal className="founder-copy"><div className="section-kicker">THE PERSON BEHIND THE MAGNET</div><h2>Experience changes how you see a <em>business.</em></h2><p>Founded by Shikha Khanna in 2023, Market Magnet Solutions positions itself as a strategic partner rather than simply a service provider. The company brings together PR, branding, marketing, sales and revenue generation around the needs of the business.</p><div className="founder-meta"><strong>21+</strong><span>years of industry experience</span></div><Link className="text-link" to="/about/shikha-khanna">Meet Shikha Khanna <ArrowUpRight/></Link></SectionReveal></section>
+
+   <section className="speciality-preview section-dark"><SectionReveal><div className="section-kicker">THE EXTENDED TOOLKIT</div><h2>When the growth plan<br/><em>needs more.</em></h2></SectionReveal><div className="editorial-grid">{specialities.map((s,i)=><Link to={`/specialities#${['media','photography','manpower'][i]}`} className="editorial-card" key={s.title}><MediaImage src={s.image} alt={s.title}/><div><span>0{i+1}</span><h3>{s.title}</h3><p>{s.description}</p><ArrowUpRight/></div></Link>)}</div></section>
+
+   <section className="digital-home section-black"><div className="digital-capability-panel"><div><span>01</span><b>PPC</b></div><div><span>02</span><b>MogulsEye</b></div><div><span>03</span><b>Creative</b></div><div><span>04</span><b>Revenue</b></div></div><div><div className="section-kicker">STRATEGIC PARTNERSHIP</div><h2>When strategy meets <em>digital scale.</em></h2><p>Market Magnet Solutions publicly presents its partnership with Internet Moguls and lists capabilities including <strong>PPC</strong>, <strong>MogulsEye</strong>, personalization, revenue management, creative design, videography, SEO, SMO, ORM and website development.</p><Link className="button button-light" to="/specialities#digital">Explore the digital ecosystem <ArrowUpRight/></Link></div></section>
+
+   <section className="training-preview section-ivory"><SectionReveal><div className="section-kicker">PEOPLE BEHIND PERFORMANCE</div><h2>Businesses are built<br/><em>by people.</em></h2><p className="section-intro dark-intro">Seven hotel-industry training areas designed around communication, service, presentation, leadership and front-office performance.</p></SectionReveal><div className="training-scroller training-home-grid">{training.map(t=><Link to={`/training#training-${t.number}`} className="training-card" key={t.number}><MediaImage src={t.image} alt={t.title}/><div><span>{t.number}</span><h3>{t.title}</h3><ArrowUpRight/></div></Link>)}</div><Link className="text-link centered" to="/training">Explore all training verticals <ArrowUpRight/></Link></section>
+
+   <section className="dmc-preview section-dark"><div className="dmc-copy"><div className="section-kicker">AND SOMETIMES, BUSINESS TAKES YOU SOMEWHERE ELSE.</div><h2>Destination expertise,<br/><em>without the noise.</em></h2><p>Tailored DMC services for Sikkim, Nepal, Northeast India and Bhutan, including corporate retreats, cultural tours and logistics support.</p><Link className="button button-light" to="/dmc">Enter DMC <ArrowUpRight/></Link></div><div className="destination-stack">{destinations.map(d=><Link to={`/dmc#${d.name.toLowerCase().replaceAll(' ','-')}`} className="destination-mini" key={d.name}><MediaImage src={d.image} alt={d.name}/><span>{d.name}</span><ArrowUpRight/></Link>)}</div></section>
+
+   <section className="presence section-ivory"><SectionReveal><div className="section-kicker">WHERE WE ARE</div><h2>Close to the markets<br/><em>that matter.</em></h2></SectionReveal><div className="location-grid">{locations.map(l=><div className="location-card" key={l.name}><MediaImage src={l.image} alt={l.name}/><span>{l.number}</span><h3>{l.name}</h3></div>)}</div></section>
+
+   <section className="perspectives section-ivory"><SectionReveal><div className="section-kicker">PERSPECTIVES</div><h2>Things worth<br/><em>thinking about.</em></h2></SectionReveal><div className="perspective-grid">{perspectives.map((p,i)=><article key={p.title}><span>0{i+1}</span><h3>{p.title}</h3><p>{p.text}</p></article>)}</div></section>
+   <section className="final-cta"><div className="final-kicker">YOUR TURN</div><h2>What's holding<br/><em>you back?</em></h2><p>Start with the problem. We'll start there.</p><Link className="button button-orange" to="/contact">Let's talk <ArrowUpRight/></Link></section>
+ </div>
+}
